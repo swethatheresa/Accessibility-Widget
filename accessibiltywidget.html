@@ -276,29 +276,33 @@
         }
     }
     function adjustFontSize(multiply = 0) {
-            const storedPercentage = parseFloat(localStorage.getItem('fontPercentage'));
-            if(storedPercentage) {
-                percentage = storedPercentage + multiply;
-                localStorage.setItem('fontPercentage', percentage);
-                if(multiply === 0)
-                {
-                    multiply = storedPercentage-1;
-                }
-            }
-            else
-            {
-                const newpercentage = 1+multiply;
-                localStorage.setItem('fontPercentage',newpercentage);
-            }
-            document
-                .querySelectorAll("*")
-                .forEach((el) => {
-                    if (!el.classList.contains('material-icons')) {
-                        let orgFontSize = parseInt(window.getComputedStyle(el).getPropertyValue('font-size'));
-                        el.style['font-size'] = orgFontSize * (1+multiply) + 'px';
-                    }
-                });
+    const storedPercentage = parseFloat(localStorage.getItem('fontPercentage'));
+    if(multiply)
+    {
+        if (storedPercentage) {
+        const newPercentage = storedPercentage + multiply;
+        localStorage.setItem('fontPercentage', newPercentage);
+        } else {
+            const newPercentage = 1 + multiply;
+            localStorage.setItem('fontPercentage', newPercentage);
         }
+    }
+    document
+        .querySelectorAll("*")
+        .forEach((el) => {
+            if (!el.classList.contains('material-icons')) {
+                let orgFontSize = parseFloat(el.getAttribute('data-asw-orgFontSize'));
+
+                if (!orgFontSize) {
+                    orgFontSize = parseFloat(window.getComputedStyle(el).getPropertyValue('font-size'));
+                    el.setAttribute('data-asw-orgFontSize', orgFontSize);
+                }
+                let adjustedFontSize = orgFontSize * (parseFloat(localStorage.getItem('fontPercentage')) || 1);
+                el.style['font-size'] = adjustedFontSize + 'px';
+            }
+        });
+}
+
 
         function adjustLetterSpacing(increment = 0) {
             let isLetterSpacingEnabled = parseInt(localStorage.getItem('isLetterSpacingEnabled'));
