@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap');
+    .asw-menu {
+        font-family: 'Inter';
+        position: fixed;
+        left: 20px;
+        top: 20px;
+        border-radius: 8px;
+        box-shadow: 0px 0px 20px #00000080;
+        opacity: 1;
+        transition: .3s;
+        z-index: 500000;
+        overflow: hidden;
+        background: #f9f9f9;
+        width: 500px;
+        line-height: 1;
+        font-size: 16px;
+        letter-spacing: 0.015em;
+        height: calc(100% - 40px - 75px);
+        color: #000 ;
+    }
+
+    .asw-menu-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-left: 18px;
+        height: 60px;
+        font-size: 18px;
+        font-weight: 700;
+        border-bottom: 1px solid #dedede;
+        color: #000;
+    }
+
+    .asw-menu-header > div {
+        display: flex;
+    }
+
+    .asw-menu-header div[role="button"] {
+        padding: 12px;
+        cursor: pointer;
+        color: #000;
+    }
+
+    .asw-menu-header div[role="button"]:hover {
+        opacity: 0.8;
+        color: #000;
+    }
+
+    .asw-card {
+        margin: 0 15px 30px;
+    }
+
+    .asw-items {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 1rem;
+    }
+
+    .asw-btn {
+        aspect-ratio: 6 / 5;
+        border-radius: 4px;
+        padding: 0 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        text-align: center;
+        color: #333;
+        font-size: 16px !important;
+        background: #fff;
+        border: 1px solid #dedede;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        line-height: 1.4;
+    }
+
+    .asw-btn .asw-translate {
+        font-size: 15px !important;
+    }
+
+    .asw-btn .material-icons {
+        margin-bottom: 16px;
+    }
+
+    .asw-btn:hover {
+        border-color: #419D4A;
+    }
+
+    .asw-btn.asw-selected {
+        background: #419D4A;
+        color: white;
+        border-color: #419D4A;
+    }
+
+    .asw-menu-content {
+        overflow-y: scroll;
+        max-height: calc(100% - 80px);
+        color: #333;
+        padding: 15px 0;
+    }
+
+    .asw-widget,
+    .asw-menu {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        font-weight: 400;
+        -webkit-font-smoothing: antialiased;
+    }
+
+    .asw-widget *,
+    .asw-menu * {
+        box-sizing: border-box;
+    }
+
+    .asw-menu-btn {
+        position: fixed;
+        z-index: 500000;
+        left: 20px;
+        bottom: 20px;
+        background: #419D4A ;
+        box-shadow: 0 5px 15px 0 rgb(37 44 97 / 15%), 0 2px 4px 0 rgb(93 100 148 / 20%);
+        transition: .3s;
+        border-radius: 50%;
+        align-items: center;
+        justify-content: center;
+        transform: scale(1);
+        width: 54px;
+        height: 54px;
+        display: flex;
+        cursor: pointer;
+        border: 4px solid white ;
+        outline: 4px solid #419D4A;
+        text-decoration: none;
+    }
+
+    .asw-menu-btn:hover {
+        transform: scale(1.1);
+    }
+    .material-icons.md-36.white { font-size: 36px; color: #f9f9f9; }
+
+    @font-face {
+            font-family: 'OpenDyslexic3';
+            src: url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.woff") format("woff"), url("https://website-widgets.pages.dev/fonts/OpenDyslexic3-Regular.ttf") format("truetype");
+        }
+
+    @media only screen and (max-width: 560px) {
+        .asw-menu-btn {
+            width: 38px;
+            height: 38px;
+        }
+
+        .asw-menu-btn svg {
+            width: 24px;
+            height: 24px;
+            min-height: 24px;
+            min-width: 24px;
+            max-width: 24px;
+            max-height: 24px;
+        }
+    }
+
+    @media only screen and (max-width: 560px) {
+        .asw-menu {
+            width: calc(100% - 20px);
+            left: 10px;
+        }
+    }
+
+    @media only screen and (max-width: 420px) {
+        .asw-items {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 0.5rem;
+        }
+
+        .asw-menu {
+            width: calc(100% - 20px);
+            left: 10px;
+        }
+    }
+</style>
+</head>
+<body>
+    <h1>Sample Page</h1>
+    <p>This is the content of the sample page.</p>
+    <a href="https://www.google.com">This is a link</a>
+<div class="asw-menu" style="display: none;" id="aswMenu">
+    <div class="asw-menu-header">
+        <div class="asw-translate">
+            Accessibility Menu
+        </div>
+        <div>
+            <div role="button" class="asw-menu-reset"  title="Reset settings" onclick="reset()">
+                <span class="material-icons" >
+                    restart_alt
+                </span>
+            </div>
+            <div role="button" class="asw-menu-close" title="Close" onclick="toggleMenu()">
+                <span class="material-icons" >
+                    close
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="asw-menu-content">
+        <div class="asw-card">
+            <div class="asw-items content">
+                <button class="asw-btn" type="button" onclick="adjustFontSize(0.1)">
+                    <span class="material-icons">format_size</span>
+                    <span class="asw-translate">Increase Font Size</span>
+                </button>
+                <button class="asw-btn" type="button"onclick="adjustFontSize(-0.1)">
+                    <span class="material-icons">text_fields</span>
+                    <span class="asw-translate">Decrease Font Size</span>
+                </button>
+                <button class="asw-btn" type="button" onclick=" adjustLineHeight(1)">
+                    <span class="material-icons">format_line_spacing</span>
+                    <span class="asw-translate">Line Spacing</span>
+                </button>
+                <button class="asw-btn" type="button" onclick="adjustLetterSpacing(0.1)">
+                    <span class="material-icons">text_rotation_none</span>
+                    <span class="asw-translate">Letter Spacing</span>
+                </button>
+                <button class="asw-btn" type="button" onclick="enableDyslexicFont()">
+                    <span class="material-icons">spellcheck</span>
+                    <span class="asw-translate">Dyslexic Font</span>
+                </button>
+                <button class="asw-btn" type="button" onclick="enableHighlightHeadings()">
+                    <span class="material-icons">local_parking</span>
+                    <span class="asw-translate">Highlight Headings</span>
+                </button>
+                <button class="asw-btn" type="button" onclick="enableHighlightLinks()">
+                    <span class="material-icons">link</span>
+                    <span class="asw-translate">Highlight Links</span>
+                </button>
+                <button class="asw-btn" type="button" onclick="adjustFontWeight(400)">
+                    <span class="material-icons">format_bold</span>
+                    <span class="asw-translate">Font Weight</span>
+                </button>
+                <button class="asw-btn" type="button"onclick="enableBigCursor()">
+                    <span class="material-icons">ads_click</span>
+                    <span class="asw-translate">Bigger Cursor</span>
+                </button>
+                <button class="asw-btn" type="button"onclick="adjustContrast()">
+                    <span class="material-icons">contrast</span>
+                    <span class="asw-translate">Contrast</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="asw-widget">
+    <a class="asw-menu-btn" title="Open Accessibility Menu" role="button" aria-expanded="false" onclick="toggleMenu()"> 
+        <span class="material-icons md-36 white">
+                blind
+        </span>
+    </a>
+</div>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons&amp;text=ads_click,text_rotation_none,text_fields,format_size,blind,restart_alt,close,link,local_parking,contrast,spellcheck,local_library,format_bold,format_line_spacing" rel="stylesheet">
+</body>
+<script>
+    function toggleMenu() {
+        var menu = document.getElementById("aswMenu");
+        if (menu.style.display === "none") {
+            menu.style.display = "block";
+        } else {
+            menu.style.display = "none";
+        }
+    }
+    function adjustFontSize(multiply = 0) {
+            const storedPercentage = parseFloat(localStorage.getItem('fontPercentage'));
+            if(storedPercentage) {
+                percentage = storedPercentage + multiply;
+                localStorage.setItem('fontPercentage', percentage);
+                if(multiply === 0)
+                {
+                    multiply = storedPercentage-1;
+                }
+            }
+            else
+            {
+                const newpercentage = 1+multiply;
+                localStorage.setItem('fontPercentage',newpercentage);
+            }
+            document
+                .querySelectorAll("*")
+                .forEach((el) => {
+                    if (!el.classList.contains('material-icons')) {
+                        let orgFontSize = parseInt(window.getComputedStyle(el).getPropertyValue('font-size'));
+                        el.style['font-size'] = orgFontSize * (1+multiply) + 'px';
+                    }
+                });
+        }
+
+        function adjustLetterSpacing(increment = 0) {
+            let isLetterSpacingEnabled = parseInt(localStorage.getItem('isLetterSpacingEnabled'));
+            if(!increment)
+            {
+                isLetterSpacingEnabled = !isLetterSpacingEnabled;
+                increment = 0.1;
+            }
+            if (!isLetterSpacingEnabled) {
+                document
+                    .querySelectorAll("*")
+                    .forEach((el) => {
+                        if (!el.classList.contains('material-icons')) {
+
+                            let orgLetterSpacing = el.getAttribute('data-asw-orgLetterSpacing');
+
+                            if (!orgLetterSpacing) {
+                                orgLetterSpacing = el.style['letter-spacing'];
+                                el.setAttribute('data-asw-orgLetterSpacing', orgLetterSpacing);
+                                if (!(orgLetterSpacing)) {
+                                    orgLetterSpacing = 0;
+                                }
+                                orgLetterSpacing = parseFloat(orgLetterSpacing);
+                                let newLetterSpacing = orgLetterSpacing + increment;
+                                el.style['letter-spacing'] = newLetterSpacing + 'em';
+                            }
+                        }
+                    });
+
+                localStorage.setItem('isLetterSpacingEnabled', 1);
+            } else {
+                document
+                    .querySelectorAll("*")
+                    .forEach((el) => {
+                        if (!el.classList.contains('material-icons')) {
+                            let orgLetterSpacing = el.getAttribute('data-asw-orgLetterSpacing');
+                            if (orgLetterSpacing) {
+                                el.style['letter-spacing'] = orgLetterSpacing;
+                                el.removeAttribute('data-asw-orgLetterSpacing');
+                            }
+                            else
+                            {
+                                el.style.removeProperty('letter-spacing');
+                            }
+                        }
+                    });
+
+                    localStorage.setItem('isLetterSpacingEnabled', 0);
+            }
+        }
+
+        function enableDyslexicFont(load = false) {
+            let isDyslexicFontEnabled = parseInt(localStorage.getItem('isDyslexicFontEnabled'));
+            if(load)
+            {
+                isDyslexicFontEnabled = !isDyslexicFontEnabled;
+            }
+            if (!isDyslexicFontEnabled) {
+                document
+                    .querySelectorAll("*")
+                    .forEach((el) => {
+                        if (!el.classList.contains('material-icons')) {
+                            orgFontFamily = el.style['font-family'];
+                            el.setAttribute('data-asw-orgFontFamily', orgFontFamily);
+                            el.style['font-family'] = 'OpenDyslexic3';
+                        }
+                    });
+
+                localStorage.setItem('isDyslexicFontEnabled', 1);
+            } else {
+                document
+                    .querySelectorAll("*")
+                    .forEach((el) => {
+                        if (!el.classList.contains('material-icons')) {
+                            orgFontFamily = el.getAttribute('data-asw-orgFontFamily');
+                            if (orgFontFamily) {
+                                el.style['font-family'] = orgFontFamily;
+                                el.removeAttribute('data-asw-orgFontFamily');
+                            }
+                            else
+                            {
+                                el.style.removeProperty('font-family');
+                            }
+                        }
+                    });
+
+                localStorage.setItem('isDyslexicFontEnabled', 0);
+            }
+        }
+
+
+        function enableBigCursor(load = false) {
+            let isBigCursorEnabled = parseInt(localStorage.getItem('isBigCursorEnabled'));
+            if(load)
+            {
+                isBigCursorEnabled = !isBigCursorEnabled;
+            }
+            if (!isBigCursorEnabled) {
+                document
+                    .querySelectorAll("*")
+                    .forEach((el) => {
+                        el.style.cursor = `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='64' height='64' viewBox='0 0 512 512'%3E%3Cpath d='M429.742 319.31L82.49 0l-.231 471.744 105.375-100.826 61.89 141.083 96.559-42.358-61.89-141.083 145.549-9.25zM306.563 454.222l-41.62 18.259-67.066-152.879-85.589 81.894.164-333.193 245.264 225.529-118.219 7.512 67.066 152.878z' xmlns='http://www.w3.org/2000/svg'/%3E%3C/svg%3E"), default`;;
+                    });
+                localStorage.setItem('isBigCursorEnabled', 1);
+            } else {
+                document
+                    .querySelectorAll("*")
+                    .forEach((el) => {
+                        el.style.cursor = 'default';
+                    });
+
+                localStorage.setItem('isBigCursorEnabled', 0);
+            }
+        }
+
+
+        function enableHighlightLinks(load = false) {
+            let isHighlightLinks = parseInt(localStorage.getItem('isHighlightLinks'));
+            if(load)
+            {
+                isHighlightLinks = !isHighlightLinks;
+            }
+            if (!isHighlightLinks) {
+                document.querySelectorAll('a,button').forEach((anchor) => {
+                    const orgTextDecoration = window.getComputedStyle(anchor).getPropertyValue('text-decoration');
+                    const orgFontWeight = window.getComputedStyle(anchor).getPropertyValue('font-weight');
+                    const orgFontSize = window.getComputedStyle(anchor).getPropertyValue('font-size');
+                    const orgLinkColor = window.getComputedStyle(anchor).getPropertyValue('color');
+                    anchor.setAttribute('data-asw-orgLinkTextDecoration', orgTextDecoration);
+                    anchor.setAttribute('data-asw-orgLinkFontWeight', orgFontWeight);
+                    anchor.setAttribute('data-asw-orgLinkFontSize', orgFontSize);
+                    anchor.setAttribute('data-asw-orgLinkColor', orgLinkColor);
+                    anchor.style.textDecoration = 'underline';
+                    anchor.style.fontWeight = '800';
+                    anchor.style['font-size'] = parseInt(orgFontSize) * 1.1 + 'px';
+                    anchor.style['color'] = '#ff0000';
+                });
+
+                localStorage.setItem('isHighlightLinks', 1);
+            } else {
+                document.querySelectorAll('a,button').forEach((anchor) => {
+                    const orgTextDecoration = anchor.getAttribute('data-asw-orgLinkTextDecoration');
+                    const orgFontWeight = anchor.getAttribute('data-asw-orgLinkFontWeight');
+                    const orgFontSize = anchor.getAttribute('data-asw-orgLinkFontSize');
+                    const orgLinkColor = anchor.getAttribute('data-asw-orgLinkColor');
+                    anchor.style.color = orgLinkColor;
+                    anchor.style.fontSize = orgFontSize;
+                    anchor.style.textDecoration = orgTextDecoration;
+                    anchor.style.fontWeight = orgFontWeight;
+                });
+
+                localStorage.setItem('isHighlightLinks', 0);
+            }
+        }
+
+
+    function enableHighlightHeadings(load = false) {
+        let isHighlightHeadings = parseInt(localStorage.getItem('isHighlightHeadings'));
+        if(load)
+        {
+            isHighlightHeadings = !isHighlightHeadings;
+        }
+        if (!isHighlightHeadings) {
+            document.querySelectorAll('h1, h2, h3,heading1').forEach((heading) => {
+                const orgTextDecoration = window.getComputedStyle(heading).getPropertyValue('text-decoration');
+                const orgHighlightColor = window.getComputedStyle(heading).getPropertyValue('color');
+                heading.setAttribute('data-asw-orgHighlightTextDecoration', orgTextDecoration)
+                heading.setAttribute('data-asw-orgHighlightColor', orgHighlightColor);
+                heading.style.color = '#ff0000';
+                heading.style.textDecoration = 'underline';
+            });
+
+            localStorage.setItem('isHighlightHeadings', 1);
+        } else {
+            document.querySelectorAll('h1, h2, h3,heading1').forEach((heading) => {
+                const orgTextDecoration = heading.getAttribute('data-asw-orgHighlightTextDecoration');
+                const orgHighlightColor = heading.getAttribute('data-asw-orgHighlightColor');
+                heading.style.textDecoration = orgTextDecoration;
+                heading.style.color = orgHighlightColor;
+            });
+
+            localStorage.setItem('isHighlightHeadings', 0);
+        }
+    }
+
+
+    function adjustLineHeight(increment = 0) {
+        let isLineHeightEnabled = parseInt(localStorage.getItem('isLineHeightEnabled'));
+        if(!increment)
+        {
+            isLineHeightEnabled = !isLineHeightEnabled;
+            increment = 1;
+        }
+        if (!isLineHeightEnabled) {
+            document
+                .querySelectorAll("*")
+                .forEach((el) => {
+                    if (!el.classList.contains('material-icons')) {
+                        let orgLineHeight = el.getAttribute('data-asw-orgLineHeight');
+
+                        if (!orgLineHeight) {
+                            orgLineHeight = el.style['line-height'];
+                            el.setAttribute('data-asw-orgLineHeight', orgLineHeight);
+                            if (!orgLineHeight) {
+                                orgLineHeight = 1.1;
+                            }
+                            orgLineHeight = parseFloat(orgLineHeight);
+                            let newLineHeight = orgLineHeight + increment;
+                            el.style['line-height'] = newLineHeight;
+                        }
+                    }
+                });
+
+            localStorage.setItem('isLineHeightEnabled', 1);
+        } else {
+            document
+                .querySelectorAll("*")
+                .forEach((el) => {
+                    if (!el.classList.contains('material-icons')) {
+                        let orgLineHeight = el.getAttribute('data-asw-orgLineHeight');
+                        if (orgLineHeight) {
+                            el.style['line-height'] = orgLineHeight;
+                            el.removeAttribute('data-asw-orgLineHeight');
+                        }
+                        else{
+                            el.style.removeProperty('line-height');
+                        }
+
+                    }
+                });
+
+            localStorage.setItem('isLineHeightEnabled', 0);
+        }
+    }
+
+    function adjustFontWeight(increment = 100) {
+        let isFontWeightEnabled = parseInt(localStorage.getItem('isFontWeightEnabled'));
+        if (increment === 100) {
+            isFontWeightEnabled = !isFontWeightEnabled;
+            increment = 400;
+        }
+        if (!isFontWeightEnabled) {
+            document
+            .querySelectorAll("*")
+            .forEach((el) => {
+                if (!el.classList.contains('material-icons')) {
+                let orgBoldFontWeight = window.getComputedStyle(el).getPropertyValue('--org-bold-font-weight');
+                if (!orgBoldFontWeight) {
+                    orgBoldFontWeight = window.getComputedStyle(el).getPropertyValue('font-weight');
+                    el.style.setProperty('--org-bold-font-weight', orgBoldFontWeight);
+                }
+                let newFontWeight = parseInt(orgBoldFontWeight) + increment;
+                el.style.setProperty('font-weight', newFontWeight);
+                }
+            });
+            localStorage.setItem('isFontWeightEnabled', 1);
+        } else {
+            document
+            .querySelectorAll("*")
+            .forEach((el) => {
+                if (!el.classList.contains('material-icons')) {
+                let orgBoldFontWeight = window.getComputedStyle(el).getPropertyValue('--org-bold-font-weight');
+                if (orgBoldFontWeight) {
+                    el.style['font-weight']= orgBoldFontWeight;
+                } else {
+                    el.style.removeProperty('font-weight');
+                }
+                el.style.removeProperty('--org-bold-font-weight');
+                }
+            });
+            localStorage.setItem('isFontWeightEnabled', 0);
+        }
+        }
+
+    function adjustContrast(load = false) {
+        let isContrastEnabled = parseInt(localStorage.getItem('isContrastEnabled'));
+        if(load)
+        {
+            isContrastEnabled = !isContrastEnabled;
+        }
+        if (!isContrastEnabled) {
+            document
+            .querySelectorAll("*")
+            .forEach((el) => {
+                let orgColor = el.getAttribute('data-asw-orgContrastColor');
+                let orgBgColor = el.getAttribute('data-asw-orgContrastBgColor');
+
+                if (!orgColor) {
+                    orgColor = el.style.color;
+                    el.setAttribute('data-asw-orgContrastColor', orgColor);
+                }
+                if(!orgBgColor) {
+                    orgBgColor = window.getComputedStyle(el).getPropertyValue('background-color');
+                    el.setAttribute('data-asw-orgContrastBgColor', orgBgColor);
+                }
+
+                el.style["color"] = '#ffff00';
+                el.style["background-color"] = '#0000ff';
+            });
+
+            localStorage.setItem('isContrastEnabled', 1);
+            } else {
+                document
+                .querySelectorAll("*")
+                .forEach((el) => {
+                    let orgContrastColor = el.getAttribute('data-asw-orgContrastColor');
+                    let orgContrastBgColor = el.getAttribute('data-asw-orgContrastBgColor');
+                    if (orgContrastColor) {
+                    el.style.color = orgContrastColor;
+                    } else {
+                    el.style.removeProperty('color');
+                    }
+                    if (orgContrastBgColor) {
+                    el.style.backgroundColor = orgContrastBgColor;
+                    } else {
+                    el.style.removeProperty('background-color');
+                    }
+                    el.removeAttribute('data-asw-orgContrastColor');
+                    el.removeAttribute('data-asw-orgContrastBgColor');
+                });
+            localStorage.setItem('isContrastEnabled', 0);
+        }
+        }
+        function onPageLoad() {
+            adjustFontSize();
+            adjustLetterSpacing();
+            enableDyslexicFont(true);
+            enableBigCursor(true);
+            enableHighlightLinks(true);
+            enableHighlightHeadings(true);
+            adjustLineHeight();
+            adjustFontWeight();
+            adjustContrast(true);
+        }
+        onPageLoad();
+        function reset(){
+            localStorage.clear();
+            onPageLoad();
+        }
+</script>
+</html>
+
